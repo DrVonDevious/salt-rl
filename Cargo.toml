@@ -8,3 +8,4 @@ edition = "2021"
 
 [dependencies]
 rltk = { version = "0.8.1" }
+legion = { version = "0.4.0" }
