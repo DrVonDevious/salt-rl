@@ -5,9 +5,11 @@ mod components;
 mod systems;
 
 use components::renderable::Renderable;
+use components::velocity::Velocity;
 use components::position::Position;
+use components::labels::Player;
 
-struct State {
+pub struct State {
     world: World,
 }
 
@@ -17,6 +19,8 @@ impl GameState for State {
         ctx.print(1, 1, "Welcome To Salt");
 
         systems::render::process(&self.world, ctx);
+        systems::movement::process(&mut self.world);
+        systems::input::process(self, ctx);
     }
 }
 
@@ -33,11 +37,13 @@ fn main() -> rltk::BError {
 
     gamestate.world.push((
         Position { x: 40, y: 25 },
+        Velocity { x: 0, y: 0 },
         Renderable {
             glyph: rltk::to_cp437('@'),
             fg: RGB::named(rltk::YELLOW),
             bg: RGB::named(rltk::BLACK),
         },
+        Player {},
     ));
 
     rltk::main_loop(context, gamestate)
